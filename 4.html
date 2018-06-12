@@ -8,6 +8,11 @@
         var once = 0;
 
         function update() {
+          if(count <= 0) {
+            clearInterval(timer);
+            document.write("最大数クリック回数: " + success);
+            document.write("<br>得点: " + point);
+          }
           once = 0;
           document.getElementById("start").value = count;
           count--; // 1秒ごとに1ずつ減少する
@@ -47,7 +52,7 @@
     </script>
   </head>
   <body>
-    <input type="button" name="start" id="start" value="ゲーム開始" onclick="setInterval('update()',3000)">
+    <input type="button" name="start" id="start" value="ゲーム開始" onclick="timer=setInterval('update()',1000)">
     <form name="g_switch">
       <input type="button" name="gs_1" value="SW1" style="width:50px; height:50px; font-size:20px;" onclick="judge_max(0)">
       <input type="button" name="gs_2" value="SW2" style="width:50px; height:50px; font-size:20px;" onclick="judge_max(1)">
