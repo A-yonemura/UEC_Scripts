@@ -2,22 +2,61 @@
   <head>
     <script type="text/javascript">
       <!--
+        var count = 20;
+        var point = 0;
+        var success = 0;
+        var once = 0;
+
+        function update() {
+          once = 0;
+          document.getElementById("start").value = count;
+          count--; // 1秒ごとに1ずつ減少する
+
+          random_button();
+        }
+
         function random_button() {
           for(i=0;i<5;i++) {
-            document.g_switch.gs_i.value = Random();
+            document.g_switch.elements[i].value = Math.floor(Math.random() * 100) + 1;
+            // 0 ~ 99の乱数を生成して+1 -> 1 ~ 100の乱数になる
+          }
+        }
+
+        function judge_max(n) {
+          if(once == 0) {
+            var max = parseInt(document.g_switch.elements[0].value);
+            for(i=1;i<5;i++) {
+              if(max < parseInt(document.g_switch.elements[i].value)) {
+                max = parseInt(document.g_switch.elements[i].value);
+              }
+            }
+
+            if(max == parseInt(document.g_switch.elements[n].value)) {
+              // 最大値をクリック出来た時
+              point += max;
+              success++;
+            } else {
+              point -= parseInt(document.g_switch.elements[n].value);
+            }
+
+            once = 1;
+            document.point.now_point.value = point;
           }
         }
       //-->
     </script>
   </head>
   <body>
-    <input type="button" name="start" value="ゲーム開始">
+    <input type="button" name="start" id="start" value="ゲーム開始" onclick="setInterval('update()',3000)">
     <form name="g_switch">
-      <input type="button" name="gs_1" value="SW1" style="width:50px; height:50px; font-size:20px;">
-      <input type="button" name="gs_2" value="SW2" style="width:50px; height:50px; font-size:20px;">
-      <input type="button" name="gs_3" value="SW3" style="width:50px; height:50px; font-size:20px;">
-      <input type="button" name="gs_4" value="SW4" style="width:50px; height:50px; font-size:20px;">
-      <input type="button" name="gs_5" value="SW5" style="width:50px; height:50px; font-size:20px;">
+      <input type="button" name="gs_1" value="SW1" style="width:50px; height:50px; font-size:20px;" onclick="judge_max(0)">
+      <input type="button" name="gs_2" value="SW2" style="width:50px; height:50px; font-size:20px;" onclick="judge_max(1)">
+      <input type="button" name="gs_3" value="SW3" style="width:50px; height:50px; font-size:20px;" onclick="judge_max(2)">
+      <input type="button" name="gs_4" value="SW4" style="width:50px; height:50px; font-size:20px;" onclick="judge_max(3)">
+      <input type="button" name="gs_5" value="SW5" style="width:50px; height:50px; font-size:20px;" onclick="judge_max(4)">
+    </form>
+    <form name="point">
+      Point : <input type="button" name="now_point" size="3" value="0">
     </form>
   </body>
 </html>
